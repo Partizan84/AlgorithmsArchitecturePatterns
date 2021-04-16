@@ -64,5 +64,5 @@ func main() {
 	r.HandleFunc("/items/{id}", getItem).Methods("GET")
 	r.HandleFunc("/items", postItem).Methods("POST")
 	r.HandleFunc("/items/{id}", deleteItem).Methods("DELETE")
-	log.Fatal(http.ListenAndServe(":8000", r))
+	log.Fatal(http.ListenAndServe(":8080", r))
 }
