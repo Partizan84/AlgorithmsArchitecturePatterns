@@ -8,15 +8,17 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+
+	"go.mongodb.org/mongo-driver/mongo"
+    "go.mongodb.org/mongo-driver/mongo/options"
+    "go.mongodb.org/mongo-driver/mongo/readpref"
+
+	"fmt"
+	"github.com/crafter76/newmod"
+	"example.com/m"
 )
 
-type Item struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-}
-
-var items []Item
+//var items []Item
 
 type myHandler struct {
 
@@ -65,6 +67,7 @@ func (h myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	fmt.Println(newmod.Hi("Василий"))
 	r := mux.NewRouter()
 	items = append(items, Item{ID: "1", Name: "Георгин", Description: "Цветок"})
 	items = append(items, Item{ID: "2", Name: "Пион", Description: "Цветок"})
@@ -75,3 +78,7 @@ func main() {
 	//r.HandleFunc("/items/{id}", deleteItem).Methods("DELETE")
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
+
+ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+defer cancel()
+client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
